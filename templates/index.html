@@ -17,5 +17,12 @@
         <!-- List the todo items here -->
       </ul>
     </div>
+    <div class="col-md-12">
+      <form method="POST" action="/task">
+        <label for="title">New task:</label>
+        <input type="text" name="title" />
+        <input type="submit">
+      </form>
+    </div>
   </div>
 {% endblock %}

@@ -9,5 +9,11 @@ def index():
     tasks = session.get_items()
     return render_template('index.html', tasks=tasks)
 
+@app.route('/task', methods=['POST'])
+def addTask():
+    title = request.form.get('title')
+    session.add_item(title)
+    return index()
+
 if __name__ == '__main__':
     app.run()
