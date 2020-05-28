@@ -15,5 +15,12 @@ def addTask():
     session.add_item(title)
     return index()
 
+@app.route('/task/<id>', methods=['PUT', 'POST'])
+def taskComplete(id):
+    task = session.get_item(id)
+    task["status"] = "Completed"
+    session.save_item(task)
+    return index()
+
 if __name__ == '__main__':
     app.run()
