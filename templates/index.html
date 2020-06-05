@@ -14,11 +14,11 @@
         {% for task in tasks %}
           <li>
             {% if task.status == "Completed" %}
-            &check;
+              &check;
             {% else %}
-            <form method="post" action="/task/{{ task.id }}">
-              <input type=submit class="checkbox" value="&#9744;">
-            </form>
+              <form method="post" action="/task/{{ task.id }}">
+                <input type=submit class="checkbox" value="&#9744;">
+              </form>
             {% endif %}
             {{ task.title }}
           </li>
@@ -28,8 +28,8 @@
     <div class="col-md-12">
       <form method="POST" action="/task">
         <label for="title">New task:</label>
-        <input type="text" name="title" />
-        <input type="submit">
+        <input type="text" name="title" required/>
+        <button>Create</button>
       </form>
     </div>
   </div>
