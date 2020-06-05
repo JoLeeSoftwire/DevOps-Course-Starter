@@ -15,6 +15,10 @@ def get_items():
     """
     return session.get('items', _DEFAULT_ITEMS)
 
+def get_sorted_items():
+    items = get_items()
+    return sorted(items, key=lambda item: item["status"])
+
 
 def get_item(id):
     """

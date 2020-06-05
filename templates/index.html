@@ -11,8 +11,26 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        {% for task in tasks %}
+          <li>
+            {% if task.status == "Completed" %}
+              &check;
+            {% else %}
+              <form method="post" action="/task/{{ task.id }}">
+                <input type=submit class="checkbox" value="&#9744;">
+              </form>
+            {% endif %}
+            {{ task.title }}
+          </li>
+        {% endfor %}
       </ul>
+    </div>
+    <div class="col-md-12">
+      <form method="POST" action="/task">
+        <label for="title">New task:</label>
+        <input type="text" name="title" required/>
+        <button>Create</button>
+      </form>
     </div>
   </div>
 {% endblock %}

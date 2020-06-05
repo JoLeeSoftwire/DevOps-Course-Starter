@@ -6,7 +6,21 @@ app.config.from_object('flask_config.Config')
 
 @app.route('/')
 def index():
-    return 'Hello World!'
+    tasks = session.get_sorted_items()
+    return render_template('index.html', tasks=tasks)
+
+@app.route('/task', methods=['POST'])
+def addTask():
+    title = request.form.get('title')
+    session.add_item(title)
+    return redirect('/')
+
+@app.route('/task/<id>', methods=['PUT', 'POST'])
+def taskComplete(id):
+    task = session.get_item(id)
+    task["status"] = "Completed"
+    session.save_item(task)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,10 @@
+li {
+    list-style: none;
+    display: flex;
+}
+
+.checkbox {
+    background: none;
+    border: none;
+    margin: none;
+}
