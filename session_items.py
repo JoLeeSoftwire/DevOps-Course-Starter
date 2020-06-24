@@ -1,23 +1,60 @@
 from flask import session
+import os
+import requests
+
+from Task import Task, Status
 
 _DEFAULT_ITEMS = [
     { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
     { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
 ]
 
+BOARD_ID = os.environ.get('BOARD_ID')
+TRELLO_KEY = os.environ.get("TRELLO_KEY")
+TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
+
+TODO_LIST_ID = os.environ.get("TODO_LIST_ID")
+DONE_LIST_ID = os.environ.get("DONE_LIST_ID")
+
+trello_baseurl = "https://api.trello.com/"
+trello_apiversion = '1'
+trello_commonurl = trello_baseurl + trello_apiversion
+boardselector = "/board/"
+listselector = "/lists/"
+cardselector = "/cards/"
 
 def get_items():
     """
-    Fetches all saved items from the session.
+    Fetches all saved items from Trello.
 
     Returns:
         list: The list of saved items.
     """
-    return session.get('items', _DEFAULT_ITEMS)
+    
+    todo = get_items_with_satus(Status.ToDo)
+    done = get_items_with_satus(Status.Done)
 
-def get_sorted_items():
-    items = get_items()
-    return sorted(items, key=lambda item: item["status"])
+    return todo + done
+
+def get_items_with_satus(status):
+    statusToID = {
+        Status.ToDo: TODO_LIST_ID,
+        Status.Done: DONE_LIST_ID
+    }
+
+    endpoint = trello_commonurl + listselector + statusToID[status] + cardselector
+    queryparams = {
+        'key': TRELLO_KEY,
+        'token': TRELLO_TOKEN,
+    }
+    trelloTasks = requests.get(endpoint, params=queryparams).json()
+
+    tasks = list()
+    for item in trelloTasks:
+        taskObj = Task(item['id'], item['name'], status)
+        tasks.append(taskObj)
+    
+    return tasks
 
 
 def get_item(id):

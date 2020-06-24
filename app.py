@@ -6,7 +6,7 @@ app.config.from_object('flask_config.Config')
 
 @app.route('/')
 def index():
-    tasks = session.get_sorted_items()
+    tasks = session.get_items()
     return render_template('index.html', tasks=tasks)
 
 @app.route('/task', methods=['POST'])
