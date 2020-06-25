@@ -97,7 +97,10 @@ def mark_done(task_id):
     }
     allparams = custom_query_params(extraparams)
 
-    trelloDone = requests.put(endpoint, params=allparams).json()
+    try:
+        trelloDone = requests.put(endpoint, params=allparams).json()
+    except:
+        print("card with id "+str(id)+" not found, will refresh")
 
 def custom_query_params(params):
     newDictionary = {**default_query_params, **params} 
