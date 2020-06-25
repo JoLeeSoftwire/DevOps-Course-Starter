@@ -23,6 +23,20 @@ boardselector = "/board/"
 listselector = "/lists/"
 cardselector = "/cards/"
 
+default_query_params = {
+    'key': TRELLO_KEY,
+    'token': TRELLO_TOKEN,
+}
+
+statusToID = {
+    Status.ToDo: TODO_LIST_ID,
+    Status.Done: DONE_LIST_ID
+}
+IDToStatus = {
+    TODO_LIST_ID: Status.ToDo,
+    DONE_LIST_ID: Status.Done
+}
+
 def get_items():
     """
     Fetches all saved items from Trello.
@@ -37,17 +51,8 @@ def get_items():
     return todo + done
 
 def get_items_with_satus(status):
-    statusToID = {
-        Status.ToDo: TODO_LIST_ID,
-        Status.Done: DONE_LIST_ID
-    }
-
     endpoint = trello_commonurl + listselector + statusToID[status] + cardselector
-    queryparams = {
-        'key': TRELLO_KEY,
-        'token': TRELLO_TOKEN,
-    }
-    trelloTasks = requests.get(endpoint, params=queryparams).json()
+    trelloTasks = requests.get(endpoint, params=default_query_params).json()
 
     tasks = list()
     for item in trelloTasks:
@@ -67,8 +72,10 @@ def get_item(id):
     Returns:
         item: The saved item, or None if no items match the specified ID.
     """
-    items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+    endpoint = trello_commonurl + cardselector + id
+    trelloTask = requests.get(endpoint, params=default_query_params).json()
+    
+    return Task(trelloTask['id'], trelloTask['name'], IDToStatus[trelloTask['idList']])
 
 
 def add_item(title):
@@ -81,18 +88,15 @@ def add_item(title):
     Returns:
         item: The saved item.
     """
-    items = get_items()
+    endpoint = trello_commonurl + cardselector
+    extra_params = {
+        "name": title,
+        "idList": TODO_LIST_ID
+    }
 
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
+    trelloTodo = requests.post(endpoint, params=custom_query_params(extra_params)).json()
 
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
-
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
-
-    return item
+    return Task(trelloTodo['id'], trelloTodo['name'], Status.ToDo)
 
 
 def save_item(item):
@@ -108,3 +112,8 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+
+def custom_query_params(params):
+    newDictionary = {**default_query_params, **params} 
+    return newDictionary
