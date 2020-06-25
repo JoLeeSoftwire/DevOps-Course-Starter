@@ -103,7 +103,7 @@ def add_item(title):
 
     trelloTodo = requests.post(endpoint, params=allparams).json()
 
-    return Task(trelloTodo['id'], trelloTodo['name'], Status.ToDo)
+    return Task(trelloTodo['id'], trelloTodo['name'])
 
 
 def mark_done(task_id):

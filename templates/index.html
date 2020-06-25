@@ -13,7 +13,7 @@
       <ul class="list-group mb-4">
         {% for task in tasks %}
           <li>
-            {% if task.status == "Completed" %}
+            {% if task.status.value == 1 %}
               &check;
             {% else %}
               <form method="post" action="/task/{{ task.id }}">

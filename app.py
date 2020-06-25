@@ -16,7 +16,7 @@ def addTask():
     return redirect('/')
 
 @app.route('/task/<id>', methods=['PUT', 'POST'])
-def taskComplete(id):
+def completeItem(id):
     session.mark_done(id)
     return redirect('/')
 

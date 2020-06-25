@@ -10,4 +10,4 @@ class Task:
     def __init__(self, id, title, status=Status.ToDo):
         self.id = id
         self.title = title
-        self.state = status
+        self.status = status
