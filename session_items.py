@@ -62,7 +62,7 @@ def get_items_with_satus(status):
     return tasks
 
 
-def add_item(title, description=""):
+def add_item(title, description=None):
     """
     Adds a new item with the specified title and description to the ToDo list in Trello.
 
@@ -78,7 +78,7 @@ def add_item(title, description=""):
         "name": title,
         "idList": TODO_LIST_ID,
     }
-    if description != "":
+    if description != None:
         extraparams.update({"desc": description})
         
     allparams = custom_query_params(extraparams)

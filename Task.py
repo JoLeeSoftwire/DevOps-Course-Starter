@@ -7,7 +7,7 @@ class Status(enum.Enum):
 
 class Task:
 
-    def __init__(self, id, title, status=Status.ToDo, description=""):
+    def __init__(self, id, title, status=Status.ToDo, description=None):
         self.id = id
         self.title = title
         self.status = status

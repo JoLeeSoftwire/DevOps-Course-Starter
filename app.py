@@ -12,7 +12,8 @@ def index():
 @app.route('/task', methods=['POST'])
 def addTask():
     title = request.form.get('title')
-    session.add_item(title)
+    description = request.form.get('description')
+    session.add_item(title, description)
     return redirect('/')
 
 @app.route('/task/<id>', methods=['PUT', 'POST'])
