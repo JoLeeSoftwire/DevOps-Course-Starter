@@ -6,5 +6,14 @@ li {
 .checkbox {
     background: none;
     border: none;
-    margin: none;
+    /* margin: none; */
+}
+
+.checkmark {
+    margin: 0 7px;
+}
+
+.task-title {
+    display: inline;
+    font-weight: bold;
 }

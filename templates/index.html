@@ -14,13 +14,16 @@
         {% for task in tasks %}
           <li>
             {% if task.status.value == 1 %}
-              &check;
+              <span class="checkmark">&check;</span>
             {% else %}
               <form method="post" action="/task/{{ task.id }}">
                 <input type=submit class="checkbox" value="&#9744;">
               </form>
             {% endif %}
-            {{ task.title }}
+            <p class="task-title">{{ task.title }}</p>
+            {% if task.description != "" %}
+              <p class="task-description">:&nbsp;{{ task.description }}</p>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>

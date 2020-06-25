@@ -56,7 +56,7 @@ def get_items_with_satus(status):
 
     tasks = list()
     for item in trelloTasks:
-        taskObj = Task(item['id'], item['name'], status)
+        taskObj = Task(item['id'], item['name'], status, item['desc'])
         tasks.append(taskObj)
     
     return tasks
