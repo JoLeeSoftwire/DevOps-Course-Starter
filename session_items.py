@@ -37,10 +37,6 @@ IDToStatus = {
     DONE_LIST_ID: Status.Done
 }
 
-def custom_query_params(params):
-    newDictionary = {**default_query_params, **params} 
-    return newDictionary
-
 def get_items():
     """
     Fetches all saved items from Trello.
@@ -64,24 +60,6 @@ def get_items_with_satus(status):
         tasks.append(taskObj)
     
     return tasks
-
-
-def get_item(id):
-    """
-    Fetches the item with the specified ID from Trello.
-
-    Args:
-        id: The ID of the item.
-
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    endpoint = trello_commonurl + cardselector + id
-    trelloTask = requests.get(endpoint, params=default_query_params).json()
-
-    # TODO: handle case of false id
-    
-    return Task(trelloTask['id'], trelloTask['name'], IDToStatus[trelloTask['idList']])
 
 
 def add_item(title):
@@ -120,3 +98,7 @@ def mark_done(task_id):
     allparams = custom_query_params(extraparams)
 
     trelloDone = requests.put(endpoint, params=allparams).json()
+
+def custom_query_params(params):
+    newDictionary = {**default_query_params, **params} 
+    return newDictionary
