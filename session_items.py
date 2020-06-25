@@ -37,6 +37,10 @@ IDToStatus = {
     DONE_LIST_ID: Status.Done
 }
 
+def custom_query_params(params):
+    newDictionary = {**default_query_params, **params} 
+    return newDictionary
+
 def get_items():
     """
     Fetches all saved items from Trello.
@@ -64,7 +68,7 @@ def get_items_with_satus(status):
 
 def get_item(id):
     """
-    Fetches the saved item with the specified ID.
+    Fetches the item with the specified ID from Trello.
 
     Args:
         id: The ID of the item.
@@ -74,13 +78,15 @@ def get_item(id):
     """
     endpoint = trello_commonurl + cardselector + id
     trelloTask = requests.get(endpoint, params=default_query_params).json()
+
+    # TODO: handle case of false id
     
     return Task(trelloTask['id'], trelloTask['name'], IDToStatus[trelloTask['idList']])
 
 
 def add_item(title):
     """
-    Adds a new item with the specified title to the session.
+    Adds a new item with the specified title to the ToDo list in Trello.
 
     Args:
         title: The title of the item.
@@ -89,31 +95,28 @@ def add_item(title):
         item: The saved item.
     """
     endpoint = trello_commonurl + cardselector
-    extra_params = {
+    extraparams = {
         "name": title,
         "idList": TODO_LIST_ID
     }
+    allparams = custom_query_params(extraparams)
 
-    trelloTodo = requests.post(endpoint, params=custom_query_params(extra_params)).json()
+    trelloTodo = requests.post(endpoint, params=allparams).json()
 
     return Task(trelloTodo['id'], trelloTodo['name'], Status.ToDo)
 
 
-def save_item(item):
+def mark_done(task_id):
     """
     Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
 
     Args:
         item: The item to save.
     """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
+    endpoint = trello_commonurl + cardselector + task_id
+    extraparams = {
+        "idList": DONE_LIST_ID
+    }
+    allparams = custom_query_params(extraparams)
 
-    session['items'] = updated_items
-
-    return item
-
-
-def custom_query_params(params):
-    newDictionary = {**default_query_params, **params} 
-    return newDictionary
+    trelloDone = requests.put(endpoint, params=allparams).json()

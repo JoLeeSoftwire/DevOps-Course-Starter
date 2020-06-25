@@ -17,9 +17,7 @@ def addTask():
 
 @app.route('/task/<id>', methods=['PUT', 'POST'])
 def taskComplete(id):
-    task = session.get_item(id)
-    task["status"] = "Completed"
-    session.save_item(task)
+    session.mark_done(id)
     return redirect('/')
 
 if __name__ == '__main__':
