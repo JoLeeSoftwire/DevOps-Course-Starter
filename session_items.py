@@ -62,12 +62,13 @@ def get_items_with_satus(status):
     return tasks
 
 
-def add_item(title):
+def add_item(title, description=""):
     """
-    Adds a new item with the specified title to the ToDo list in Trello.
+    Adds a new item with the specified title and description to the ToDo list in Trello.
 
     Args:
         title: The title of the item.
+        description: The description of the item.
 
     Returns:
         item: The saved item.
@@ -75,21 +76,24 @@ def add_item(title):
     endpoint = trello_commonurl + cardselector
     extraparams = {
         "name": title,
-        "idList": TODO_LIST_ID
+        "idList": TODO_LIST_ID,
     }
+    if description != "":
+        extraparams.update({"desc": description})
+        
     allparams = custom_query_params(extraparams)
 
     trelloTodo = requests.post(endpoint, params=allparams).json()
 
-    return Task(trelloTodo['id'], trelloTodo['name'])
+    return Task(trelloTodo['id'], title, description=description)
 
 
 def mark_done(task_id):
     """
-    Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
+    Updates an existing item in Trello. If no existing item matches the ID of the specified item, nothing is saved, and the page refreshes.
 
     Args:
-        item: The item to save.
+        task_id: The id of the item to mark as done.
     """
     endpoint = trello_commonurl + cardselector + task_id
     extraparams = {
