@@ -1,13 +1,7 @@
-from flask import session
 import os
 import requests
 
 from Task import Task, Status
-
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
 
 BOARD_ID = os.environ.get('BOARD_ID')
 TRELLO_KEY = os.environ.get("TRELLO_KEY")
@@ -45,18 +39,19 @@ def get_items():
         list: The list of saved items.
     """
     
-    todo = get_items_with_satus(Status.ToDo)
-    done = get_items_with_satus(Status.Done)
+    todo = get_items_with_status(Status.ToDo)
+    done = get_items_with_status(Status.Done)
 
     return todo + done
 
-def get_items_with_satus(status):
-    endpoint = trello_commonurl + listselector + statusToID[status] + cardselector
+def get_items_with_status(status):
+    statusId = statusToID[status]
+    endpoint = trello_commonurl + listselector + statusId + cardselector
     trelloTasks = requests.get(endpoint, params=default_query_params).json()
 
     tasks = list()
     for item in trelloTasks:
-        taskObj = Task(item['id'], item['name'], status, item['desc'])
+        taskObj = Task.from_trello(item, status)
         tasks.append(taskObj)
     
     return tasks
@@ -104,7 +99,7 @@ def mark_done(task_id):
     try:
         trelloDone = requests.put(endpoint, params=allparams).json()
     except:
-        print("card with id "+str(id)+" not found, will refresh")
+        print(f"card with id {str(id)} not found, will refresh")
 
 def custom_query_params(params):
     newDictionary = {**default_query_params, **params} 

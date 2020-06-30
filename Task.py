@@ -12,3 +12,12 @@ class Task:
         self.title = title
         self.status = status
         self.description = description
+
+    @classmethod
+    def from_trello(cls, item, status=Status.ToDo):
+        task = cls.__new__(cls)
+        task.id = item['id']
+        task.title = item['name']
+        task.status = status
+        task.description = item['desc']
+        return task
