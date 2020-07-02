@@ -7,9 +7,6 @@ BOARD_ID = os.environ.get('BOARD_ID')
 TRELLO_KEY = os.environ.get("TRELLO_KEY")
 TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
 
-TODO_LIST_ID = os.environ.get("TODO_LIST_ID")
-DONE_LIST_ID = os.environ.get("DONE_LIST_ID")
-
 trello_baseurl = "https://api.trello.com/"
 trello_apiversion = '1'
 trello_commonurl = trello_baseurl + trello_apiversion
@@ -20,15 +17,6 @@ cardselector = "/cards/"
 default_query_params = {
     'key': TRELLO_KEY,
     'token': TRELLO_TOKEN,
-}
-
-statusToID = {
-    Status.ToDo: TODO_LIST_ID,
-    Status.Done: DONE_LIST_ID
-}
-IDToStatus = {
-    TODO_LIST_ID: Status.ToDo,
-    DONE_LIST_ID: Status.Done
 }
 
 class TrelloApi:
@@ -48,7 +36,8 @@ class TrelloApi:
 
     @staticmethod
     def get_items_with_status(status):
-        statusId = statusToID[status]
+        listIds = TrelloApi.get_list_ids()
+        statusId = listIds[status]
         endpoint = trello_commonurl + listselector + statusId + cardselector
         trelloTasks = requests.get(endpoint, params=default_query_params).json()
 
@@ -73,9 +62,10 @@ class TrelloApi:
             item: The saved item.
         """
         endpoint = trello_commonurl + cardselector
+        listIds = TrelloApi.get_list_ids()
         extraparams = {
             "name": title,
-            "idList": TODO_LIST_ID,
+            'idList': listIds[Status.ToDo]
         }
         if description != None:
             extraparams.update({"desc": description})
@@ -96,8 +86,9 @@ class TrelloApi:
             task_id: The id of the item to mark as done.
         """
         endpoint = trello_commonurl + cardselector + task_id
+        listIds = TrelloApi.get_list_ids()
         extraparams = {
-            "idList": DONE_LIST_ID
+            "idList": listIds[Status.Done]
         }
         allparams = TrelloApi.custom_query_params(extraparams)
 
@@ -110,3 +101,22 @@ class TrelloApi:
     def custom_query_params(params):
         newDictionary = {**default_query_params, **params} 
         return newDictionary
+
+    @staticmethod
+    def get_list_ids():
+        endpoint = trello_commonurl + boardselector + BOARD_ID + listselector
+        try:
+            trelloLists = requests.get(endpoint, params=default_query_params).json()
+        except:
+            print(f"board with id {BOARD_ID} not found, check config")
+        
+        listIds = {
+            Status.ToDo: "no ToDo list found for this board",
+            Status.Done: "no Done list found for this board"
+        }
+        for list in trelloLists:
+            if(list["name"] == "To Do"):
+                listIds[Status.ToDo] = list["id"]
+            if(list["name"] == "Done"):
+                listIds[Status.Done] = list["id"]
+        return listIds
