@@ -32,7 +32,10 @@ class TrelloApi:
         todo = TrelloApi.get_items_with_status(Status.ToDo)
         done = TrelloApi.get_items_with_status(Status.Done)
 
-        return todo + done
+        return {
+            Status.ToDo: todo,
+            Status.Done: done
+        }
 
     @staticmethod
     def get_items_with_status(status):

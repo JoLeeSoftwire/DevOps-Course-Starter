@@ -11,20 +11,23 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        {% for task in tasks %}
-          <li>
-            {% if task.status.value == 1 %}
-              <span class="checkmark">&check;</span>
-            {% else %}
-              <form method="post" action="/task/{{ task.id }}">
-                <input type=submit class="checkbox" value="&#9744;">
-              </form>
-            {% endif %}
-            <p class="task-title">{{ task.title }}</p>
-            {% if task.description != "" %}
-              <p class="task-description">:&nbsp;{{ task.description }}</p>
-            {% endif %}
-          </li>
+        {% for status, list in data.tasks.items() %}
+          <h6>{{ status.name }}</h6>
+          {% for task in list %}
+            <li>
+              {% if task.status.value == 1 %}
+                <span class="checkmark">&check;</span>
+              {% else %}
+                <form method="post" action="/task/{{ task.id }}">
+                  <input type=submit class="checkbox" value="&#9744;">
+                </form>
+              {% endif %}
+              <p class="task-title">{{ task.title }}</p>
+              {% if task.description != "" %}
+                <p class="task-description">:&nbsp;{{ task.description }}</p>
+              {% endif %}
+            </li>
+          {% endfor %}
         {% endfor %}
       </ul>
     </div>
