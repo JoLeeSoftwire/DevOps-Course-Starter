@@ -21,3 +21,24 @@ class Task:
         task.status = status
         task.description = item['desc']
         return task
+
+    def prettyPrint(self):
+        print('{')
+        print('\tid: '+self.id+',')
+        print('\ttitle: '+self.title+',')
+        print('\tstatus: '+self.status.name+',')
+        if(self.description != None):
+            print('\tdescription: '+self.description)
+        print('}')
+
+    def __eq__(self, other):
+        if not isinstance(other, Task):
+            # don't attempt to compare against unrelated types
+            return NotImplemented
+
+        idMatch = self.id == other.id
+        titleMatch = self.title == other.title
+        statusMatch = self.status == other.status
+        descriptionMatch = self.description == other.description
+
+        return idMatch and titleMatch and statusMatch and descriptionMatch

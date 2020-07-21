@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-# import trello_api as trello
 from TrelloApi import TrelloApi
 from ViewModel import ViewModel
 

@@ -1,7 +1,7 @@
 import os
 import requests
 
-from Task import Task, Status
+from .Task import Task, Status
 
 BOARD_ID = os.environ.get('BOARD_ID')
 TRELLO_KEY = os.environ.get("TRELLO_KEY")
