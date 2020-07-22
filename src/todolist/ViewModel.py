@@ -8,9 +8,9 @@ class ViewModel:
     @property
     def tasks(self):
         return {
-            Status.ToDo: self._tasks[Status.ToDo],
-            Status.Doing: self._tasks[Status.Doing],
-            Status.Done: {
+            "ToDo": self._tasks[Status.ToDo],
+            "Doing": self._tasks[Status.Doing],
+            "Done": {
                 "recent": self.recent_done_items,
                 "old": self.older_done_items
             }
