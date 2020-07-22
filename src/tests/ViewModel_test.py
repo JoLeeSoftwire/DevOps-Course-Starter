@@ -5,29 +5,8 @@ from todolist.Task import Task, Status
 
 dateformat = "%Y-%m-%dT%H:%M:%S.%fZ"
 
-def test_show_all_done_if_less_than_five():
-    # Given
-    expectedDone = [
-        Task(1, 'I did this', status=Status.Done),
-        Task(2, "I did this too", status=Status.Done),
-        Task(3, "another thing I did", status=Status.Done),
-        Task(4, "oh and another thing", status=Status.Done),
-        Task(5, "a fifth thing I have doned", status=Status.Done, last_modified=datetime.strptime("2020-06-29T09:17:20.141163Z", dateformat))
-    ]
-    inputTasks = {
-        Status.ToDo: [],
-        Status.Done: expectedDone,
-        Status.Doing: []
-    }
-
-    # When
-    vm = ViewModel(inputTasks)
-
-    # Then
-    assert vm.tasks[Status.Done] == expectedDone
-
 ### TODO: rewrite these to not fail for the first 2 hours of the day
-def test_show_today_if_more_than_five_and_toggle_off():
+def test_correct_recent_done_items():
     # Given
     task1DoneAt = datetime.now() - timedelta(minutes=15)
     task2DoneAt = datetime.now() - timedelta(minutes=10)
@@ -58,7 +37,7 @@ def test_show_today_if_more_than_five_and_toggle_off():
     vm = ViewModel(inputTasks)
 
     # Then
-    assert vm.tasks[Status.Done] == expectedDone
+    assert vm.recent_done_items == expectedDone
 
 # def test_show_all_if_more_than-five_and_toggle_on
 
