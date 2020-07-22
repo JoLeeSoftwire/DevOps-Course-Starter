@@ -35,8 +35,8 @@ class TrelloApi:
 
         return {
             Status.ToDo: todo,
-            Status.Done: done,
-            Status.Doing: doing
+            Status.Doing: doing,
+            Status.Done: done
         }
 
     @staticmethod
