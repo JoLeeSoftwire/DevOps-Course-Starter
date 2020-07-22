@@ -19,3 +19,7 @@ class ViewModel:
     @property
     def recent_done_items(self):
         return list(filter(lambda t:t.touchedToday(), self._tasks[Status.Done]))
+
+    @property
+    def older_done_items(self):
+        return list(filter(lambda t:not t.touchedToday(), self._tasks[Status.Done]))
