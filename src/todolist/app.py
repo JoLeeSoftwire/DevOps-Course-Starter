@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from TrelloApi import TrelloApi
-from ViewModel import ViewModel
+from .TrelloApi import TrelloApi
+from .ViewModel import ViewModel
 
 app = Flask(__name__)
 
