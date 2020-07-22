@@ -3,7 +3,7 @@ import enum
 class Status(enum.Enum):
     ToDo = 0
     Done = 1
-    # Doing = 2
+    Doing = 2
 
 class Task:
 

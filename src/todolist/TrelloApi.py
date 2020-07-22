@@ -31,10 +31,12 @@ class TrelloApi:
         
         todo = TrelloApi.get_items_with_status(Status.ToDo)
         done = TrelloApi.get_items_with_status(Status.Done)
+        doing = TrelloApi.get_items_with_status(Status.Doing)
 
         return {
             Status.ToDo: todo,
-            Status.Done: done
+            Status.Done: done,
+            Status.Doing: doing
         }
 
     @staticmethod
@@ -115,11 +117,14 @@ class TrelloApi:
         
         listIds = {
             Status.ToDo: "no ToDo list found for this board",
-            Status.Done: "no Done list found for this board"
+            Status.Done: "no Done list found for this board",
+            Status.Doing: "no Doing list found for this board"
         }
         for list in trelloLists:
             if(list["name"] == "To Do"):
                 listIds[Status.ToDo] = list["id"]
             if(list["name"] == "Done"):
                 listIds[Status.Done] = list["id"]
+            if(list["name"] == "Doing"):
+                listIds[Status.Doing] = list["id"]
         return listIds
