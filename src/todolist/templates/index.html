@@ -27,7 +27,9 @@
         <h6>Doing:</h6>
         {% for task in data.tasks["Doing"] %}
           <li>
-            <span class="checkmark">&check;</span>
+            <form method="post" action="/task/{{ task.id }}">
+              <input type=submit class="checkbox" value="&#9744;">
+            </form>
             <p class="task-title">{{ task.title }}</p>
             {% if task.description != "" %}
               <p class="task-description">:&nbsp;{{ task.description }}</p>
@@ -39,9 +41,7 @@
         <h6>Done:</h6>
         {% for task in data.tasks["Done"]["recent"] %}
           <li>
-            <form method="post" action="/task/{{ task.id }}">
-              <input type=submit class="checkbox" value="&#9744;">
-            </form>
+            <span class="checkmark">&check;</span>
             <p class="task-title">{{ task.title }}</p>
             {% if task.description != "" %}
               <p class="task-description">:&nbsp;{{ task.description }}</p>
@@ -51,9 +51,7 @@
         {% if (data.tasks["Done"]["recent"]|length + data.tasks["Done"]["old"]|length) <= 5 %}
           {% for task in data.tasks["Done"]["old"] %}
             <li>
-              <form method="post" action="/task/{{ task.id }}">
-                <input type=submit class="checkbox" value="&#9744;">
-              </form>
+              <span class="checkmark">&check;</span>
               <p class="task-title">{{ task.title }}</p>
               {% if task.description != "" %}
                 <p class="task-description">:&nbsp;{{ task.description }}</p>
@@ -65,9 +63,7 @@
             <summary>See All</summary>
             {% for task in data.tasks["Done"]["old"] %}
               <li>
-                <form method="post" action="/task/{{ task.id }}">
-                  <input type=submit class="checkbox" value="&#9744;">
-                </form>
+                <span class="checkmark">&check;</span>
                 <p class="task-title">{{ task.title }}</p>
                 {% if task.description != "" %}
                   <p class="task-description">:&nbsp;{{ task.description }}</p>
