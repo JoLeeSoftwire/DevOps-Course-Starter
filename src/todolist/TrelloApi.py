@@ -3,16 +3,16 @@ import requests
 
 from .Task import Task, Status
 
-BOARD_ID = os.environ.get('BOARD_ID')
-TRELLO_KEY = os.environ.get("TRELLO_KEY")
-TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
-
 trello_baseurl = "https://api.trello.com/"
 trello_apiversion = '1'
 trello_commonurl = trello_baseurl + trello_apiversion
 boardselector = "/board/"
 listselector = "/lists/"
 cardselector = "/cards/"
+
+BOARD_ID = os.environ.get('BOARD_ID')
+TRELLO_KEY = os.environ.get("TRELLO_KEY")
+TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
 
 default_query_params = {
     'key': TRELLO_KEY,
@@ -128,3 +128,22 @@ class TrelloApi:
             if(list["name"] == "Doing"):
                 listIds[Status.Doing] = list["id"]
         return listIds
+
+    @staticmethod
+    def create_board(title):
+        endpoint = trello_commonurl + boardselector
+        extraparams = {
+            "name": title,
+        }
+        allparams = TrelloApi.custom_query_params(extraparams)
+
+        newBoard = requests.post(endpoint, params=allparams)
+
+        return newBoard
+
+    @staticmethod
+    def delete_board(id):
+        endpoint = trello_commonurl + trello_apiversion + boardselector + id
+        reponse = requests.post(endpoint, params=default_query_params)
+
+        return response
