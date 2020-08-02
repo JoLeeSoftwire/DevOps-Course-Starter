@@ -137,13 +137,14 @@ class TrelloApi:
         }
         allparams = TrelloApi.custom_query_params(extraparams)
 
-        newBoard = requests.post(endpoint, params=allparams)
+        response = requests.post(endpoint, params=allparams)
+        newBoard = response.json()
 
         return newBoard
 
     @classmethod
     def delete_board(cls, id):
         endpoint = trello_commonurl + trello_apiversion + boardselector + id
-        reponse = requests.post(endpoint, params=cls.default_query_params)
-
+        response = requests.post(endpoint, params=cls.default_query_params)
+        
         return response
