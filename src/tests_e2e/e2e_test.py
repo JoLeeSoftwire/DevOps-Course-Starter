@@ -57,10 +57,20 @@ def test_task_journey(driver, test_app):
     submit_button = driver.find_element_by_id("create_task")
     submit_button.click()
 
-    # if there isn't exactly 1 entry, these will error
+    # if there isn't exactly 1 entry (and it has a checkbox), these will error
     checkbox = driver.find_element_by_class_name("checkbox")
-    title = driver.find_element_by_class_name("task-title")
-    description = driver.find_element_by_class_name("task-description")
+    todo_title = driver.find_element_by_class_name("task-title")
+    todo_description = driver.find_element_by_class_name("task-description")
     
-    assert title.text == test_task_name
-    assert description.text == ": " + test_task_description
+    assert todo_title.text == test_task_name
+    assert todo_description.text == ": " + test_task_description
+
+    checkbox.click()
+
+    # if there isn't exactly 1 entry (and it has a checkmark), these will error
+    checkmark = driver.find_element_by_class_name("checkmark")
+    done_title = driver.find_element_by_class_name("task-title")
+    done_description = driver.find_element_by_class_name("task-description")
+
+    assert done_title.text == test_task_name
+    assert done_description.text == ": " + test_task_description
