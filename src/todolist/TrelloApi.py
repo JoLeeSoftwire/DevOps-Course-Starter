@@ -10,18 +10,18 @@ boardselector = "/board/"
 listselector = "/lists/"
 cardselector = "/cards/"
 
-BOARD_ID = os.environ.get('BOARD_ID')
-TRELLO_KEY = os.environ.get("TRELLO_KEY")
-TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
-
-default_query_params = {
-    'key': TRELLO_KEY,
-    'token': TRELLO_TOKEN,
-}
-
 class TrelloApi:
-    @staticmethod
-    def get_items():
+    BOARD_ID = os.environ.get('BOARD_ID')
+    TRELLO_KEY = os.environ.get("TRELLO_KEY")
+    TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
+
+    default_query_params = {
+        'key': TRELLO_KEY,
+        'token': TRELLO_TOKEN,
+    }
+
+    @classmethod
+    def get_items(cls):
         """
         Fetches all saved items from Trello.
 
@@ -39,12 +39,12 @@ class TrelloApi:
             Status.Done: done
         }
 
-    @staticmethod
-    def get_items_with_status(status):
+    @classmethod
+    def get_items_with_status(cls, status):
         listIds = TrelloApi.get_list_ids()
         statusId = listIds[status]
         endpoint = trello_commonurl + listselector + statusId + cardselector
-        trelloTasks = requests.get(endpoint, params=default_query_params).json()
+        trelloTasks = requests.get(endpoint, params=cls.default_query_params).json()
 
         tasks = list()
         for item in trelloTasks:
@@ -54,8 +54,8 @@ class TrelloApi:
         return tasks
 
 
-    @staticmethod
-    def add_item(title, description=None):
+    @classmethod
+    def add_item(cls, title, description=None):
         """
         Adds a new item with the specified title and description to the ToDo list in Trello.
 
@@ -82,8 +82,8 @@ class TrelloApi:
         return Task(trelloTodo['id'], title, description=description)
 
 
-    @staticmethod
-    def mark_done(task_id):
+    @classmethod
+    def mark_done(cls, task_id):
         """
         Updates an existing item in Trello. If no existing item matches the ID of the specified item, nothing is saved, and the page refreshes.
 
@@ -102,18 +102,18 @@ class TrelloApi:
         except:
             print(f"card with id {str(id)} not found, will refresh")
 
-    @staticmethod
-    def custom_query_params(params):
-        newDictionary = {**default_query_params, **params} 
+    @classmethod
+    def custom_query_params(cls, params):
+        newDictionary = {**cls.default_query_params, **params} 
         return newDictionary
 
-    @staticmethod
-    def get_list_ids():
-        endpoint = trello_commonurl + boardselector + BOARD_ID + listselector
+    @classmethod
+    def get_list_ids(cls):
+        endpoint = trello_commonurl + boardselector + cls.BOARD_ID + listselector
         try:
-            trelloLists = requests.get(endpoint, params=default_query_params).json()
+            trelloLists = requests.get(endpoint, params=cls.default_query_params).json()
         except:
-            print(f"board with id {BOARD_ID} not found, check config")
+            print(f"board with id {cls.BOARD_ID} not found, check config")
         
         listIds = {
             Status.ToDo: "no ToDo list found for this board",
@@ -129,8 +129,8 @@ class TrelloApi:
                 listIds[Status.Doing] = list["id"]
         return listIds
 
-    @staticmethod
-    def create_board(title):
+    @classmethod
+    def create_board(cls, title):
         endpoint = trello_commonurl + boardselector
         extraparams = {
             "name": title,
@@ -141,9 +141,9 @@ class TrelloApi:
 
         return newBoard
 
-    @staticmethod
-    def delete_board(id):
+    @classmethod
+    def delete_board(cls, id):
         endpoint = trello_commonurl + trello_apiversion + boardselector + id
-        reponse = requests.post(endpoint, params=default_query_params)
+        reponse = requests.post(endpoint, params=cls.default_query_params)
 
         return response

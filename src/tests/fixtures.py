@@ -406,7 +406,7 @@ class MockReturn:
         ]
         listIds = [
             {
-                "id": "5bbcd4bae16d0019c3f56346",
+                "id": "1",
                 "name": "To Do",
                 "closed": False,
                 "pos": 16384,
@@ -415,7 +415,7 @@ class MockReturn:
                 "subscribed": False
             },
             {
-                "id": "5bbcd4bae16d0019c3f56347",
+                "id": "3",
                 "name": "Doing",
                 "closed": False,
                 "pos": 32768,
@@ -424,7 +424,7 @@ class MockReturn:
                 "subscribed": False
             },
             {
-                "id": "5bbcd4bae16d0019c3f56348",
+                "id": "2",
                 "name": "Done",
                 "closed": False,
                 "pos": 49152,
@@ -439,7 +439,7 @@ class MockReturn:
             return done
         if(self.endpoint == "https://api.trello.com/1/lists/3/cards/"):
             return doing
-        if(self.endpoint.startswith("https://api.trello.com/1/board/") and endpoint.endswith("/lists")):
+        if(self.endpoint.startswith("https://api.trello.com/1/board/") and self.endpoint.endswith("/lists/")):
             return listIds
         else:
             return []
