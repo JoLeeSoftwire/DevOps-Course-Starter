@@ -46,3 +46,21 @@ def driver():
 def test_task_journey(driver, test_app):
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
+
+    test_task_name = "a test task"
+    test_task_description = "with description"
+
+    title_input = driver.find_element_by_name("title")
+    title_input.send_keys(test_task_name)
+    description_input = driver.find_element_by_name("description")
+    description_input.send_keys(test_task_description)
+    submit_button = driver.find_element_by_id("create_task")
+    submit_button.click()
+
+    # if there isn't exactly 1 entry, these will error
+    checkbox = driver.find_element_by_class_name("checkbox")
+    title = driver.find_element_by_class_name("task-title")
+    description = driver.find_element_by_class_name("task-description")
+    
+    assert title.text == test_task_name
+    assert description.text == ": " + test_task_description
