@@ -13,7 +13,7 @@ $ source setup.sh
 $ source setup.sh --windows
 ```
 
-Once the setup script has completed and all packages have been installed, navigate into the `src` folder, and start the Flask app by running:
+Once the setup script has completed and all packages have been installed, populate the `src/.env` file with your trello api credentials and board ID. Then navigate into the `src` folder, and start the Flask app by running:
 ```bash
 $ flask run
 ```
@@ -29,3 +29,18 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Running Tests
+### Unit tests
+navigate to the the `src/tests` directory
+run `pytest` to run all the unit and integration tests
+run `pytest <filename>` to run the unit tests in that file
+
+### Integration tests
+navigate to the `src/tests` directory
+run `pytest integration_test.py`
+
+### End to end tests
+you will need to have installed Chrome web browser, and the Selenium [chrome driver](https://chromedriver.chromium.org/downloads)
+navigate to the `src/tests_e2e` folder
+run `pytest`
