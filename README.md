@@ -13,7 +13,7 @@ $ source setup.sh
 $ source setup.sh --windows
 ```
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
+Once the setup script has completed and all packages have been installed, navigate into the `src` folder, and start the Flask app by running:
 ```bash
 $ flask run
 ```

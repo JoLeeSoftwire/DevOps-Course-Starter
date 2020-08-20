@@ -19,4 +19,4 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # Create a .env file from the .env.template
-cp -n .env.template .env
+cp -n src/.env.template src/.env
