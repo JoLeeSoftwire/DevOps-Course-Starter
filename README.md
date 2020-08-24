@@ -2,23 +2,16 @@
 
 ## Getting started
 
-The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from a bash shell terminal:
+The project uses vagrant to run in a suitably configured VM. You will need Vagrant and VirtualBox installed.
 
-### On macOS and Linux
+Copy the src/.env.template file to a new file `src/.env`, and populate it with your trello api credentials and board ID. 
+
+Then start the Flask app by running:
 ```bash
-$ source setup.sh
-```
-### On Windows (Using Git Bash)
-```bash
-$ source setup.sh --windows
+$ vagrant up
 ```
 
-Once the setup script has completed and all packages have been installed, populate the `src/.env` file with your trello api credentials and board ID. Then navigate into the `src` folder, and start the Flask app by running:
-```bash
-$ flask run
-```
-
-You should see output similar to the following:
+You should (eventually) see output similar to the following:
 ```bash
  * Serving Flask app "app" (lazy loading)
  * Environment: development
@@ -31,6 +24,8 @@ You should see output similar to the following:
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Running Tests
+Note these do not currently run on the VM, you will need to `poetry install` locally to run the tests
+
 ### Unit tests
 navigate to the the `src/tests` directory
 run `pytest` to run all the unit and integration tests
