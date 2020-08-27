@@ -11,6 +11,8 @@ Then start the Flask app by running:
 $ vagrant up
 ```
 
+Alternatively, run `poetry install` then `poetry run flask run` locally
+
 You should (eventually) see output similar to the following:
 ```bash
  * Serving Flask app "app" (lazy loading)
