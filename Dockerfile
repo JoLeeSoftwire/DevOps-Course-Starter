@@ -11,4 +11,4 @@ COPY . .
 RUN poetry install
 
 ENTRYPOINT [ "poetry" ]
-CMD ["run", "gunicorn", "todolist.app:create_app()"]
+CMD ["run", "gunicorn", "--bind=0.0.0.0", "todolist.app:create_app()"]
