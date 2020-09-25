@@ -3,6 +3,3 @@
 Vagrantfile
 env
 .gitignore
-
-
-src/.env
