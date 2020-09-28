@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    todolist-prod:
+        build: 
+            context: .
+            target: development
+        env_file: ./.env
+        ports: 
+            - "5000:5000"
+        volumes:
+            - "/c/Work/DevOps/DevOps-Course-Starter/src:/todo-app/src"
+
