@@ -9,5 +9,5 @@ services:
         ports: 
             - "5000:5000"
         volumes:
-            - "/c/Work/DevOps/DevOps-Course-Starter/src:/todo-app/src"
+            - "./src:/todo-app/src"
 
