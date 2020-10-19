@@ -1,0 +1,5 @@
+.vscode
+.vagrant
+Vagrantfile
+env
+.gitignore
