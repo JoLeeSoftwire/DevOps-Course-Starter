@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-    todolist-prod:
+    todolist-app:
         build: 
             context: .
             target: development
