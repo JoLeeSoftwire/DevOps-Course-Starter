@@ -2,14 +2,17 @@
 
 ## Getting started
 
-The project uses docker to run in a suitably configured container. You will need Docker installed.
-
 Copy the `.env.template` file to a new file `.env`, and populate it with your trello api credentials and board ID. 
+
+The project can use docker to run in a suitably configured container. For this you will need Docker installed.
 
 Then start the Flask app by running:
 ```bash
-$ docker-compose up
+$ docker-compose up --build
 ```
+
+There is also a vagrantfile, to run the project in vagrant
+to use this run `vagrant up` in the project root
 
 Alternatively, run `poetry install` then `poetry run flask run` locally
 
@@ -26,7 +29,7 @@ You should (eventually) see output similar to the following:
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Running Tests
-Note these do not currently run in the container, you will need to `poetry install` locally to run the tests
+Note these do not currently run in the docker container or vagrant, you will need to `poetry install` locally to run the tests
 
 ### Unit tests
 navigate to the the `src/tests` directory
