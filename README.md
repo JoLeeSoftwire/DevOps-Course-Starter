@@ -44,3 +44,6 @@ run `pytest integration_test.py`
 you will need to have installed Chrome web browser, and the Selenium [chrome driver](https://chromedriver.chromium.org/downloads)
 navigate to the `src/tests_e2e` folder
 run `poetry run pytest`
+
+## Documentation
+see the `docs` folder for 3 of the C4 diagrams
