@@ -1,3 +1,7 @@
+services:
+- docker
+
 script:
 - docker build --target test --tag todoapp-test .
 - docker run todoapp-test src/tests
+- docker run --env-file ./.env todoapp-test src/tests_e2e
