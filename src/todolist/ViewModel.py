@@ -1,4 +1,5 @@
 from .Task import Task, Status
+from datetime import datetime
 
 class ViewModel:
     def __init__(self, tasks):
@@ -18,8 +19,8 @@ class ViewModel:
 
     @property
     def recent_done_items(self):
-        return list(filter(lambda t:t.touchedToday(), self._tasks[Status.Done]))
+        return list(filter(lambda t:t.touchedOn(datetime.now().date()), self._tasks[Status.Done]))
 
     @property
     def older_done_items(self):
-        return list(filter(lambda t:not t.touchedToday(), self._tasks[Status.Done]))
+        return list(filter(lambda t:not t.touchedOn(datetime.now().date()), self._tasks[Status.Done]))
