@@ -9,4 +9,4 @@ env:
 script:
 - docker build --target test --tag todoapp-test .
 - docker run todoapp-test src/tests
-- docker run todoapp-test src/tests_e2e
+- docker run -e TRELLO_TOKEN=$TRELLO_TOKEN -e TRELLO_KEY=$TRELLO_KEY todoapp-test src/tests_e2e
