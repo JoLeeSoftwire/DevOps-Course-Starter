@@ -16,7 +16,7 @@ before-script:
 - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
 script:
-- docker build --target production --tag JoLeeSoftwire/todoapp:latest .
+- docker build --target production --tag joleesoftwire/todoapp:latest .
 
 after-sucess:
-- docker push JoLeeSoftwire/todoapp:latest
+- docker push joleesoftwire/todoapp:latest
