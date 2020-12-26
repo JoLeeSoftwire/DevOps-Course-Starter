@@ -25,7 +25,7 @@ FROM base as production
 COPY . .
 RUN poetry install
 
-ENTRYPOINT poetry run gunicorn --bind=0.0.0.0:$PORT src.todolist.app:create_app()
+ENTRYPOINT ["./prod.sh"]
 # build with command: docker build --target production --tag todolist:prod .
 # run command: docker run --env-file .env -p 5000:8000 todolist:prod
 
