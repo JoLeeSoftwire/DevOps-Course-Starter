@@ -19,6 +19,7 @@ script:
 - docker build --target production --tag joleesoftwire/todoapp:latest --tag joleesoftwire/todoapp:$TRAVIS_COMMIT .
 
 after-sucess:
+- echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 - docker login --username=joleesoftwire --password=$(heroku auth:token) registry.heroku.com
 - docker push joleesoftwire/todoapp:latest
 - docker tag joleesoftwire/todoapp registry.heroku.com/jol-todoapp/web
