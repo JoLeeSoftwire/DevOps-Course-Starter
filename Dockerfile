@@ -25,6 +25,7 @@ FROM base as production
 COPY . .
 RUN poetry install
 
+RUN chmod 711 prod.sh
 ENTRYPOINT ["./prod.sh"]
 # build with command: docker build --target production --tag todolist:prod .
 # run command: docker run --env-file .env -p 5000:8000 todolist:prod
