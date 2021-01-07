@@ -27,8 +27,8 @@ class Task:
         task.last_modified = datetime.strptime(item['dateLastActivity'], dateformat)
         return task
 
-    def touchedOn(self, date):
-        return self.last_modified.date() == date
+    def touchedToday(self):
+        return self.last_modified.date() == datetime.now().date()
 
     def prettyPrint(self):
         print('{')
