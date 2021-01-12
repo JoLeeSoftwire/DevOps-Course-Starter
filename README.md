@@ -55,7 +55,7 @@ to run them in the docker container: `docker run --env-file ./.env todoapp-test 
 to run them locally:
 you will need to have installed Chrome web browser, and the Selenium [chrome driver](https://chromedriver.chromium.org/downloads)
 navigate to the `src/tests_e2e` folder
-comment out lines 43-47 in `e2e_tests.py` and uncomment line 48 (don't forget to reverse this if you switch to running them in a container)
+comment out lines 43-47 (line 44 optional) in `e2e_tests.py` and uncomment line 48 (don't forget to reverse this if you switch to running them in a container)
 run `poetry run pytest`
 
 ## Documentation
