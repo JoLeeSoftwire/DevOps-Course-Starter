@@ -29,20 +29,33 @@ You should (eventually) see output similar to the following:
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Running Tests
-Note these do not currently run in the docker container or vagrant, you will need to `poetry install` locally to run the tests
+These can be run in a docker container or locally
+you will need to run `poetry install` in order to run the tests locally, or build the docker container once with `docker build --target test --tag todoapp-test .` to run tests in docker
+To run all tests in docker: `docker run --env-file ./.env todoapp-tests`
+To run all the tests locally: `poetry run pytest`
 
 ### Unit tests
+to run them (and the integration tests) in the docker container: `docker run todoapp-test src/tests`
+
+to run them locally:
 navigate to the the `src/tests` directory
 run `poetry run pytest` to run all the unit and integration tests
 run `poetry run pytest <filename>` to run the unit tests in that file
 
 ### Integration tests
+to run them in the docker container, see the instructions for running unit tests in the container
+
+to run them locally:
 navigate to the `src/tests` directory
 run `pytest integration_test.py`
 
 ### End to end tests
+to run them in the docker container: `docker run --env-file ./.env todoapp-test src/tests_e2e`
+
+to run them locally:
 you will need to have installed Chrome web browser, and the Selenium [chrome driver](https://chromedriver.chromium.org/downloads)
 navigate to the `src/tests_e2e` folder
+comment out lines 43-47 (line 44 optional) in `e2e_tests.py` and uncomment line 48 (don't forget to reverse this if you switch to running them in a container)
 run `poetry run pytest`
 
 ## Documentation
