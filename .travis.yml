@@ -20,17 +20,16 @@ before-script:
 script:
 - docker build --target production --tag joleesoftwire/todoapp:latest --tag joleesoftwire/todoapp:$TRAVIS_COMMIT .
 
-# after-sucess:
-# - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-# - docker login --username=joleesoftwire --password=$HEROKU_API_KEY registry.heroku.com
-# - docker push joleesoftwire/todoapp:latest
-# - docker tag joleesoftwire/todoapp registry.heroku.com/jol-todoapp/web
-# - docker push registry.heroku.com/jol-todoapp/web
-# - heroku container:release --app jol-todoapp web
+before-deploy:
+- echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+- docker login --username=joleesoftwire --password=$HEROKU_API_KEY registry.heroku.com
+- docker push joleesoftwire/todoapp:latest
+- docker tag joleesoftwire/todoapp registry.heroku.com/jol-todoapp/web
+- docker push registry.heroku.com/jol-todoapp/web
 
 deploy:
   skip_cleanup: true
   provider: script
-  script: ./deploy.sh
+  script: heroku container:release --app jol-todoapp web
   on:
     branch: master
