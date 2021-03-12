@@ -27,6 +27,18 @@ class Task:
         task.last_modified = datetime.strptime(item['dateLastActivity'], dateformat)
         return task
 
+    @classmethod
+    def from_mongo(cls, item, status=Status.ToDo):
+        dateformat = "%Y-%m-%dT%H:%M:%S.%fZ"
+        
+        task = cls.__new__(cls)
+        task.id = item['_id']
+        task.title = item['name']
+        task.status = status
+        task.description = item['desc']
+        task.last_modified = datetime.strptime(item['dateLastActivity'], dateformat)
+        return task
+
     def touchedToday(self):
         return self.last_modified.date() == datetime.now().date()
 
