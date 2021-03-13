@@ -2,28 +2,15 @@ import os
 import pytest
 from selenium import webdriver
 from threading import Thread
-from todolist.TrelloApi import TrelloApi
+from todolist.DbCommunicator import DbCommunicator
 import todolist.app as app
 from dotenv import find_dotenv, load_dotenv
 
 @pytest.fixture(scope='module')
 def test_app():
-    # set up real api
-    file_path = find_dotenv('.env.e2e_test')
-    load_dotenv(file_path, override=True)
-
-    trello_key = os.environ.get("TRELLO_KEY")
-    trello_token = os.environ.get("TRELLO_TOKEN")
-    TrelloApi.TRELLO_KEY = trello_key
-    TrelloApi.TRELLO_TOKEN = trello_token
-    TrelloApi.default_query_params = {
-        'key': trello_key,
-        'token': trello_token,
-    }
-
-    # Create the new board & update the board id environment variable
-    board_id = TrelloApi.create_board("Test ToDo")["id"]
-    TrelloApi.BOARD_ID = board_id
+    # Create the test db & update the db in DbCommunicator
+    test_db = DbCommunicator.create_db("test-todo")
+    DbCommunicator.db = test_db
     
     # construct the new application
     application = app.create_app()
@@ -36,17 +23,19 @@ def test_app():
     
     # Tear Down
     thread.join(1)
-    TrelloApi.delete_board(board_id)
+    DbCommunicator.delete_db("test-todo")
+    # DbCommunicator.db = DbCommunicator.client.todo_app_db
+
 
 @pytest.fixture(scope="module")
 def driver():
-    opts = webdriver.ChromeOptions()
-    opts.add_argument('--headless')
-    opts.add_argument('--no-sandbox')
-    opts.add_argument('--disable-dev-shm-usage')
-    with webdriver.Chrome('./chromedriver', options=opts) as driver:
+    # opts = webdriver.ChromeOptions()
+    # opts.add_argument('--headless')
+    # opts.add_argument('--no-sandbox')
+    # opts.add_argument('--disable-dev-shm-usage')
+    # with webdriver.Chrome('./chromedriver', options=opts) as driver:
     # use the below for running locally, or above for running in a docker container
-    # with webdriver.Chrome() as driver:
+    with webdriver.Chrome() as driver:
         yield driver
 
 def test_task_journey(driver, test_app):

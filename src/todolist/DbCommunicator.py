@@ -1,12 +1,15 @@
 import pymongo
 import os
-
+from datetime import datetime
+from bson.objectid import ObjectId
 from .Task import Task, Status
 
 class DbCommunicator:
     MONGODB_STRING = os.environ.get('MONGODB_STRING')
     client = pymongo.MongoClient(MONGODB_STRING)
     db = client.todo_app_db
+
+    dateformat = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     @classmethod
     def get_items(cls):
@@ -49,17 +52,18 @@ class DbCommunicator:
         Returns:
             item: The saved item.
         """
-        todos = db.ToDo
+        todos = cls.db.ToDo
+        timestamp = datetime.now().strftime(cls.dateformat)
         document = {
             "name": title,
-            'idList': listIds[Status.ToDo],
+            "dateLastActivity": timestamp,
         }
         if description != None:
             document.update({"desc": description})
         
         taskId = todos.insert_one(document).inserted_id
 
-        return Task(taskId, title, description=description)
+        return Task(taskId, title, description=description, last_modified=timestamp)
 
 
     @classmethod
@@ -71,30 +75,25 @@ class DbCommunicator:
             task_id: The id of the item to mark as done.
         """
         try:
-            mongoDoc = cls.db.ToDo.find_one({"_id": task_id})
+            mongoDoc = cls.db.ToDo.find_one({"_id": ObjectId(task_id)})
+            mongoDoc["dateLastActivity"] = datetime.now().strftime(cls.dateformat)
             cls.db.Done.insert_one(mongoDoc)
-            db.ToDo.delete_one({"_id": task_id})
+            cls.db.ToDo.delete_one({"_id": ObjectId(task_id)})
         except:
-            print(f"card with id {str(id)} not found, will refresh")
+            print(f"card with id {str(task_id)} not found, will refresh")
 
 
-    # @classmethod
-    # def create_db(cls, title):
-    #     endpoint = trello_commonurl + boardselector
-    #     extraparams = {
-    #         "name": title,
-    #     }
-    #     allparams = TrelloApi.custom_query_params(extraparams)
+    @classmethod
+    def create_db(cls, name):
+        test_db = DbCommunicator.client[name]
+        return test_db
 
-    #     response = requests.post(endpoint, params=allparams)
-    #     newBoard = response.json()
-
-    #     return newBoard
-
-    # @classmethod
-    # def delete_db(cls, id):
-    #     endpoint = trello_commonurl + trello_apiversion + boardselector + id
-    #     response = requests.post(endpoint, params=cls.default_query_params)
-        
-    #     return response
+    @classmethod
+    def delete_db(cls, name):
+        # drop all the collections in that db, which is equivalent, since we don't have permission to drop dbs
+        db = DbCommunicator.client[name]
+        db.ToDo.drop()
+        db.Done.drop()
+        db.Doing.drop()
+        return DbCommunicator.db
     
