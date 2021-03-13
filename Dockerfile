@@ -40,7 +40,7 @@ echo "Installing chromium webdriver version ${LATEST}" &&\
 curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
 apt-get install unzip -y &&\
 unzip ./chromedriver_linux64.zip
-ENV PATH="/todoapp/chromedriver_linux64:${PATH}"
+ENV PATH="/todo-app:${PATH}"
 
 COPY . .
 RUN poetry install
