@@ -14,7 +14,7 @@ class DbCommunicator:
     @classmethod
     def get_items(cls):
         """
-        Fetches all saved items from Trello.
+        Fetches all saved items from the database.
 
         Returns:
             list: The list of saved items.
@@ -43,7 +43,7 @@ class DbCommunicator:
     @classmethod
     def add_item(cls, title, description=None):
         """
-        Adds a new item with the specified title and description to the ToDo list in Trello.
+        Adds a new item with the specified title and description to the ToDo collection in the database.
 
         Args:
             title: The title of the item.
@@ -69,7 +69,7 @@ class DbCommunicator:
     @classmethod
     def mark_done(cls, task_id):
         """
-        Updates an existing item in Trello. If no existing item matches the ID of the specified item, nothing is saved, and the page refreshes.
+        Moves an existing document from 'ToDo' to 'Done' in the database. If no existing item matches the ID of the specified item, nothing is saved, and the page refreshes.
 
         Args:
             task_id: The id of the item to mark as done.
