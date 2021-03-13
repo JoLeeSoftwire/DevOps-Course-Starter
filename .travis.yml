@@ -15,7 +15,7 @@ env:
 before-script:
 - docker build --target test --tag todoapp-test .
 - docker run todoapp-test src/tests
-- docker run -e TRELLO_TOKEN=$TRELLO_TOKEN -e TRELLO_KEY=$TRELLO_KEY todoapp-test src/tests_e2e
+- docker run -e MONGODB_STRING=$MONGODB_STRING todoapp-test src/tests_e2e
 - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
 script:

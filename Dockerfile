@@ -2,7 +2,7 @@ FROM python:3.8.5-buster as base
 
 WORKDIR /todo-app
 
-RUN apt-get update && apt-get install curl -y
+RUN apt-get update --fix-missing && apt-get install curl -y
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 ENV PATH="/root/.poetry/bin:${PATH}"
 
@@ -40,6 +40,7 @@ echo "Installing chromium webdriver version ${LATEST}" &&\
 curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
 apt-get install unzip -y &&\
 unzip ./chromedriver_linux64.zip
+ENV PATH="/todoapp/chromedriver_linux64:${PATH}"
 
 COPY . .
 RUN poetry install

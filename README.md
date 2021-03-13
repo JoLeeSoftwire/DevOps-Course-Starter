@@ -2,7 +2,7 @@
 
 ## Getting started
 
-Copy the `.env.template` file to a new file `.env`, and populate it with your trello api credentials and board ID. 
+Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string. 
 
 The project can use docker to run in a suitably configured container. For this you will need Docker installed.
 
@@ -31,7 +31,7 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 ## Running Tests
 These can be run in a docker container or locally
 you will need to run `poetry install` in order to run the tests locally, or build the docker container once with `docker build --target test --tag todoapp-test .` to run tests in docker
-To run all tests in docker: `docker run --env-file ./.env todoapp-tests`
+To run all tests in docker: `docker run --env-file ./.env todoapp-test`
 To run all the tests locally: `poetry run pytest`
 
 ### Unit tests
