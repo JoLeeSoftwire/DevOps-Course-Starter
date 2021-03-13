@@ -3,7 +3,6 @@ import requests
 import todolist.app as app
 from todolist.DbCommunicator import DbCommunicator
 from dotenv import find_dotenv, load_dotenv
-from .fixtures import MockReturn
 import os
 from unittest import mock
 
