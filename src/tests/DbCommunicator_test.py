@@ -6,7 +6,7 @@ from todolist.DbCommunicator import DbCommunicator
 from todolist.Task import Task, Status
 from unittest import mock
 
-def test_get_todo_items(monkeypatch):
+def test_get_todo_items():
     # Given
     todo_docs = [
             {
@@ -46,34 +46,72 @@ def test_get_todo_items(monkeypatch):
     # Then
     assert expectedToDos == todos
 
-# def test_get_done_items(monkeypatch):
-#     # Given
-#     monkeypatch.setattr(TrelloApi, "get_list_ids", lambda: {Status.ToDo: '1', Status.Done: '2'})
+
+def test_get_done_items():
+    # Given
+    done_docs = [
+            {
+                "_id": "2ef487407c6915497a7610a3",
+                "dateLastActivity": "2020-06-25T11:15:12.453Z",
+                "desc": "",
+                "name": "test card",
+            },
+            {
+                "_id": "2ef48d1e29fc363139d1b134",
+                "dateLastActivity": "2020-06-25T11:40:14.718Z",
+                "desc": "with a description",
+                "name": "another task",
+            }
+        ]
     
-#     monkeypatch.setattr(requests, "get", lambda endpoint, params: MockReturn(endpoint, params))
-#     expectedDone = [
-#         Task("2ef487407c6915497a7610a3", "test card", status=Status.Done, description="" ),
-#         Task("2ef48d1e29fc363139d1b134", "another task", status=Status.Done, description="with a description"),
-#     ]
+    db_mock = {
+        "Done": mock.Mock(),
+    }
+    db_mock['Done'].find.return_value = done_docs
+    DbCommunicator.db = db_mock
 
-#     # When
-#     done = TrelloApi.get_items_with_status(Status.Done)
+    expectedDone = [
+        Task("2ef487407c6915497a7610a3", "test card", status=Status.Done, description="" ),
+        Task("2ef48d1e29fc363139d1b134", "another task", status=Status.Done, description="with a description"),
+    ]
 
-#     # Then
-#     assert expectedDone == done
+    # When
+    done = DbCommunicator.get_items_with_status(Status.Done)
 
-# def test_get_doing_items(monkeypatch):
-#     # Given
-#     monkeypatch.setattr(TrelloApi, "get_list_ids", lambda: {Status.ToDo: '1', Status.Done: '2', Status.Doing: '3'})
-    
-#     monkeypatch.setattr(requests, "get", lambda endpoint, params: MockReturn(endpoint, params))
-#     expectedDoing = [
-#         Task("3ef487407c6915497a7610a3", "I'll finish it later", status=Status.Doing, description="eventually" ),
-#         Task("3ef48d1e29fc363139d1b134", "half way through this", status=Status.Doing, description=""),
-#     ]
+    # Then
+    assert expectedDone == done
 
-#     # When
-#     doing = TrelloApi.get_items_with_status(Status.Doing)
 
-#     # Then
-#     assert expectedDoing == doing
+def test_get_doing_items():
+    # Given
+    doing_docs = [
+            {
+                "_id": "3ef487407c6915497a7610a3",
+                "dateLastActivity": "2020-06-25T11:15:12.453Z",
+                "desc": "eventually",
+                "name": "I'll finish it later",
+            },
+            {
+                "_id": "3ef48d1e29fc363139d1b134",
+                "dateLastActivity": "2020-06-25T11:40:14.718Z",
+                "desc": "",
+                "name": "half way through this",
+            }
+        ]
+
+    db_mock = {
+        "Doing": mock.Mock(),
+    }
+    db_mock['Doing'].find.return_value = doing_docs
+    DbCommunicator.db = db_mock
+
+    expectedDoing = [
+        Task("3ef487407c6915497a7610a3", "I'll finish it later", status=Status.Doing, description="eventually" ),
+        Task("3ef48d1e29fc363139d1b134", "half way through this", status=Status.Doing, description=""),
+    ]
+
+    # When
+    doing = DbCommunicator.get_items_with_status(Status.Doing)
+
+    # Then
+    assert expectedDoing == doing
