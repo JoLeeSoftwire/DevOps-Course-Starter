@@ -32,3 +32,5 @@ deploy:
   skip_cleanup: true
   provider: script
   script: heroku container:release --app jol-todoapp web
+  on:
+    branch: master
