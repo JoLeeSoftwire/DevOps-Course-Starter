@@ -61,3 +61,40 @@ class DbCommunicator:
 
         return Task(taskId, title, description=description)
 
+
+    @classmethod
+    def mark_done(cls, task_id):
+        """
+        Updates an existing item in Trello. If no existing item matches the ID of the specified item, nothing is saved, and the page refreshes.
+
+        Args:
+            task_id: The id of the item to mark as done.
+        """
+        try:
+            mongoDoc = cls.db.ToDo.find_one({"_id": task_id})
+            cls.db.Done.insert_one(mongoDoc)
+            db.ToDo.delete_one({"_id": task_id})
+        except:
+            print(f"card with id {str(id)} not found, will refresh")
+
+
+    # @classmethod
+    # def create_db(cls, title):
+    #     endpoint = trello_commonurl + boardselector
+    #     extraparams = {
+    #         "name": title,
+    #     }
+    #     allparams = TrelloApi.custom_query_params(extraparams)
+
+    #     response = requests.post(endpoint, params=allparams)
+    #     newBoard = response.json()
+
+    #     return newBoard
+
+    # @classmethod
+    # def delete_db(cls, id):
+    #     endpoint = trello_commonurl + trello_apiversion + boardselector + id
+    #     response = requests.post(endpoint, params=cls.default_query_params)
+        
+    #     return response
+    
