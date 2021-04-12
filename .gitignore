@@ -111,6 +111,7 @@ dmypy.json
 
 ### Virtual environment ###
 env/
+.venv
 
 ### Configuration files ###
 .env
@@ -120,3 +121,6 @@ env/
 
 # logs
 /logs/**
+
+# IDE specific
+.vscode

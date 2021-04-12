@@ -1,27 +1,13 @@
+import os
 import pytest
 import requests
-import todolist.app as app
+import pymongo
 from todolist.DbCommunicator import DbCommunicator
-from dotenv import find_dotenv, load_dotenv
-import os
+from todolist.Task import Task, Status
 from unittest import mock
 
-@pytest.fixture
-def client():
-    # Use our test integration config instead of the 'real' version
-    file_path = find_dotenv('.env.test')
-    load_dotenv(file_path, override=True)
-
-    DbCommunicator.MONGODB_STRING = os.environ.get('MONGODB_STRING')
-    
-    # Create the new app.
-    test_app = app.create_app()
-    
-    # Use the app to create a test_client that can be used in our tests.
-    with test_app.test_client() as client:
-        yield client
-
-def test_index_page(monkeypatch, client):
+def test_get_todo_items():
+    # Given
     todo_docs = [
             {
                 "_id": "5ef487407c6915497a7610a3",
@@ -42,6 +28,27 @@ def test_index_page(monkeypatch, client):
                 "name": "task with no desc",
             }
         ]
+    db_mock = {
+        "ToDo": mock.Mock(),
+    }
+    db_mock['ToDo'].find.return_value = todo_docs
+    DbCommunicator.db = db_mock
+
+    expectedToDos = [
+        Task("5ef487407c6915497a7610a3", "make it give a sensible message if a card is deleted", status=Status.ToDo, description="" ),
+        Task("5ef48d1e29fc363139d1b134", "ame release", status=Status.ToDo, description="and some testing?"),
+        Task("5ef48d2ac2352a2856c43c76", "task with no desc", status=Status.ToDo, description="")
+    ]
+
+    # When
+    todos = DbCommunicator.get_items_with_status(Status.ToDo)
+
+    # Then
+    assert expectedToDos == todos
+
+
+def test_get_done_items():
+    # Given
     done_docs = [
             {
                 "_id": "2ef487407c6915497a7610a3",
@@ -56,6 +63,27 @@ def test_index_page(monkeypatch, client):
                 "name": "another task",
             }
         ]
+    
+    db_mock = {
+        "Done": mock.Mock(),
+    }
+    db_mock['Done'].find.return_value = done_docs
+    DbCommunicator.db = db_mock
+
+    expectedDone = [
+        Task("2ef487407c6915497a7610a3", "test card", status=Status.Done, description="" ),
+        Task("2ef48d1e29fc363139d1b134", "another task", status=Status.Done, description="with a description"),
+    ]
+
+    # When
+    done = DbCommunicator.get_items_with_status(Status.Done)
+
+    # Then
+    assert expectedDone == done
+
+
+def test_get_doing_items():
+    # Given
     doing_docs = [
             {
                 "_id": "3ef487407c6915497a7610a3",
@@ -70,28 +98,20 @@ def test_index_page(monkeypatch, client):
                 "name": "half way through this",
             }
         ]
-    
+
     db_mock = {
-        "ToDo": mock.Mock(),
-        "Done": mock.Mock(),
-        "Doing": mock.Mock()
+        "Doing": mock.Mock(),
     }
-    db_mock['ToDo'].find.return_value = todo_docs
-    db_mock['Done'].find.return_value = done_docs
     db_mock['Doing'].find.return_value = doing_docs
     DbCommunicator.db = db_mock
 
-    response = client.get('/')
-    content = response.data.decode('utf-8')
-    print(content)
-    assert "make it give a sensible message if a card is deleted" in content
-    assert "ame release" in content
-    assert "and some testing?" in content
-    assert "task with no desc" in content
-    assert "test card" in content
-    assert "another task" in content
-    assert "with a description" in content
-    assert "I&#39;ll finish it later" in content
-    assert "eventually" in content
-    assert "half way through this" in content
+    expectedDoing = [
+        Task("3ef487407c6915497a7610a3", "I'll finish it later", status=Status.Doing, description="eventually" ),
+        Task("3ef48d1e29fc363139d1b134", "half way through this", status=Status.Doing, description=""),
+    ]
 
+    # When
+    doing = DbCommunicator.get_items_with_status(Status.Doing)
+
+    # Then
+    assert expectedDoing == doing

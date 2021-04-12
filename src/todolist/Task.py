@@ -16,11 +16,11 @@ class Task:
         self.last_modified = last_modified
 
     @classmethod
-    def from_trello(cls, item, status=Status.ToDo):
+    def from_mongo(cls, item, status=Status.ToDo):
         dateformat = "%Y-%m-%dT%H:%M:%S.%fZ"
         
         task = cls.__new__(cls)
-        task.id = item['id']
+        task.id = item['_id']
         task.title = item['name']
         task.status = status
         task.description = item['desc']
