@@ -6,8 +6,9 @@ from .Task import Task, Status
 
 class DbCommunicator:
     MONGODB_STRING = os.environ.get('MONGODB_STRING')
+    MONGODB_DBNAME = os.environ.get('MONGODB_DBNAME', 'test')
     client = pymongo.MongoClient(MONGODB_STRING)
-    db = client.todo_app_db
+    db = client[MONGODB_DBNAME]
 
     dateformat = "%Y-%m-%dT%H:%M:%S.%fZ"
 
