@@ -19,7 +19,6 @@ def create_app():
     @login_manager.unauthorized_handler
     def unauthenticated():
         endpoint = "https://github.com/login/oauth/authorize"
-        # state = randomString(12)
         github_url = client.prepare_request_uri(endpoint)
 
         return redirect(github_url)
@@ -79,13 +78,6 @@ def create_app():
     def completeItem(id):
         DbCommunicator.mark_done(id)
         return redirect('/')
-
-    # def randomString(len):
-    #     random_string = ''
-    #     for _ in range(len):
-    #         random_integer = randint(97, 97+26-1)
-    #         random_string += (chr(random_integer))
-    #     return random_string
 
     if __name__ == '__main__':
         app.run(host='0.0.0.0')
