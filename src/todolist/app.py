@@ -13,6 +13,7 @@ client = WebApplicationClient(CLIENT_ID)
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.environ.get("SECRET_KEY")
     login_manager = LoginManager()
 
     @login_manager.unauthorized_handler
@@ -50,8 +51,8 @@ def create_app():
         auth_header = {
             "Authorization": "Bearer "+token
         }
-        user_details = requests.get(user_endpoint, headers=auth_header)
-        user = User(user_details['user_id'])
+        user_details = requests.get(user_endpoint, headers=auth_header).json()
+        user = User(user_details['id'])
         
         success = login_user(user)
         
@@ -66,6 +67,7 @@ def create_app():
         return render_template('index.html', data=item_view_model)
 
     @app.route('/task', methods=['POST'])
+    @login_required
     def addTask():
         title = request.form.get('title')
         description = request.form.get('description')
@@ -73,6 +75,7 @@ def create_app():
         return redirect('/')
 
     @app.route('/task/<id>', methods=['PUT', 'POST'])
+    @login_required
     def completeItem(id):
         DbCommunicator.mark_done(id)
         return redirect('/')
