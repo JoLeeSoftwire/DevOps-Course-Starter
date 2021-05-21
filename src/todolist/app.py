@@ -1,10 +1,9 @@
 import requests, os
-# from random import randint
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort
 from .DbCommunicator import DbCommunicator
 from .ViewModel import ViewModel
-from .User import User
-from flask_login import LoginManager, login_required, login_user
+from .User import User, Role
+from flask_login import LoginManager, login_required, login_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -29,6 +28,11 @@ def create_app():
         return user
 
     login_manager.init_app(app)
+
+    def requireWriteAccess():
+        if current_user.role() == Role.Reader:
+            abort(403)
+        return
 
     @app.route('/login/callback')
     def login():
@@ -68,6 +72,7 @@ def create_app():
     @app.route('/task', methods=['POST'])
     @login_required
     def addTask():
+        requireWriteAccess()
         title = request.form.get('title')
         description = request.form.get('description')
         DbCommunicator.add_item(title, description)
@@ -76,6 +81,7 @@ def create_app():
     @app.route('/task/<id>', methods=['PUT', 'POST'])
     @login_required
     def completeItem(id):
+        requireWriteAccess()
         DbCommunicator.mark_done(id)
         return redirect('/')
 
