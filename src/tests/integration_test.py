@@ -5,6 +5,7 @@ from todolist.DbCommunicator import DbCommunicator
 from dotenv import find_dotenv, load_dotenv
 import os
 from unittest import mock
+from .AnonUser import AnonUser
 
 @pytest.fixture
 def client():
@@ -17,6 +18,7 @@ def client():
     # Create the new app.
     test_app = app.create_app()
     test_app.config['LOGIN_DISABLED']=True
+    test_app.login_manager.anonymous_user = AnonUser
     
     # Use the app to create a test_client that can be used in our tests.
     with test_app.test_client() as client:

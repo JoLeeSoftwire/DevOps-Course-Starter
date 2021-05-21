@@ -34,7 +34,7 @@ def test_correct_recent_done_items():
     }
 
     # When
-    vm = ViewModel(inputTasks)
+    vm = ViewModel(inputTasks, True)
 
     # Then
     assert vm.recent_done_items == expectedRecent
@@ -65,7 +65,7 @@ def test_show_all_if_more_than_five_and_toggle_on():
     }
 
     # When
-    vm = ViewModel(inputTasks)
+    vm = ViewModel(inputTasks, True)
 
     # Then
     assert vm.older_done_items == expectedOld
