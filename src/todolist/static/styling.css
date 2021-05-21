@@ -3,6 +3,10 @@ li {
     display: flex;
 }
 
+.todo-bullet {
+    padding: 0 9px
+}
+
 .checkbox {
     background: none;
     border: none;

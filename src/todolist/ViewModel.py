@@ -1,8 +1,9 @@
 from .Task import Task, Status
 
 class ViewModel:
-    def __init__(self, tasks):
+    def __init__(self, tasks, write_access):
         self._tasks = tasks
+        self._write_access = write_access
         self._show_all_done_items = False
 
     @property
@@ -23,3 +24,7 @@ class ViewModel:
     @property
     def older_done_items(self):
         return list(filter(lambda t:not t.touchedToday(), self._tasks[Status.Done]))
+
+    @property
+    def write_access(self):
+        return self._write_access

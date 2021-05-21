@@ -66,7 +66,8 @@ def create_app():
     @login_required
     def index():
         tasks = DbCommunicator.get_items()
-        item_view_model = ViewModel(tasks)
+        has_write_access = current_user.role() == Role.Writer
+        item_view_model = ViewModel(tasks, has_write_access)
         return render_template('index.html', data=item_view_model)
 
     @app.route('/task', methods=['POST'])

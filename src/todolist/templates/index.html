@@ -15,7 +15,11 @@
         {% for task in data.tasks["ToDo"] %}
           <li>
             <form method="post" action="/task/{{ task.id }}">
-              <input type=submit class="checkbox" value="&#9744;">
+              {% if data.write_access %}
+                <input type=submit class="checkbox" value="&#9744;">
+              {% else %}
+                <span class="todo-bullet">&bull;</span>
+              {% endif %}
             </form>
             <p class="task-title">{{ task.title }}</p>
             {% if task.description != "" %}
@@ -75,6 +79,7 @@
         
       </ul>
     </div>
+    {% if data.write_access %}
     <div class="col-md-12">
       <form method="POST" action="/task">
         <label for="title">New task:</label>
@@ -85,5 +90,6 @@
         <button id="create_task">Create</button>
       </form>
     </div>
+    {% endif %}
   </div>
 {% endblock %}
