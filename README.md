@@ -2,7 +2,12 @@
 
 ## Getting started
 
-Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string. 
+You will need to set up an OAuth App in GitHub to support the app's authentication, see documentation [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
+* The homapage URL will be `http://localhost:5000`
+* The Authorization callback URL will be `http://localhost:5000/login/callback`
+* Make a note of the `client id` and `client secret` for the .env file
+
+Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string, client id, and client secret.
 
 The project can use docker to run in a suitably configured container. For this you will need Docker installed.
 
