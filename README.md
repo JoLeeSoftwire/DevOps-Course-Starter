@@ -2,7 +2,12 @@
 
 ## Getting started
 
-Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string. 
+You will need to set up an OAuth App in GitHub to support the app's authentication, see documentation [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
+* The homapage URL will be `http://localhost:5000`
+* The Authorization callback URL will be `http://localhost:5000/login/callback`
+* Make a note of the `client id` and `client secret` for the .env file
+
+Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string, client id, and client secret.
 
 The project can use docker to run in a suitably configured container. For this you will need Docker installed.
 
@@ -29,15 +34,14 @@ You should (eventually) see output similar to the following:
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Running Tests
-These can be run in a docker container or locally
-you will need to run `poetry install` in order to run the tests locally, or build the docker container once with `docker build --target test --tag todoapp-test .` to run tests in docker
-To run all tests in docker: `docker run --env-file ./.env todoapp-test`
+These can be run in a docker container or locally. You will need to run `poetry install` in order to run the tests locally, or build the docker container once with `docker build --target test --tag todoapp-test .` to run tests in docker. 
+To run all tests in docker: `docker run --env-file ./.env todoapp-test`. 
 To run all the tests locally: `poetry run pytest`
 
 ### Unit tests
-to run them (and the integration tests) in the docker container: `docker run todoapp-test src/tests`
+To run them (and the integration tests) in the docker container: `docker run todoapp-test src/tests`
 
-to run them locally:
+To run them locally: 
 navigate to the the `src/tests` directory
 run `poetry run pytest` to run all the unit and integration tests
 run `poetry run pytest <filename>` to run the unit tests in that file

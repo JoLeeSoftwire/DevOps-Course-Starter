@@ -5,6 +5,7 @@ from threading import Thread
 from todolist.DbCommunicator import DbCommunicator
 import todolist.app as app
 from dotenv import find_dotenv, load_dotenv
+from tests.AnonUser import AnonUser
 
 @pytest.fixture(scope='module')
 def test_app():
@@ -14,6 +15,8 @@ def test_app():
     
     # construct the new application
     application = app.create_app()
+    application.config['LOGIN_DISABLED']=True
+    application.login_manager.anonymous_user = AnonUser
     
     # start the app in its own thread.
     thread = Thread(target=lambda: application.run(use_reloader=False))
