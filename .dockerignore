@@ -4,3 +4,4 @@ Vagrantfile
 env
 .gitignore
 **/.terraform/*
+terraform.tfstate
