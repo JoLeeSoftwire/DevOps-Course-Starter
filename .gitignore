@@ -124,3 +124,6 @@ env/
 
 # IDE specific
 .vscode
+
+# Local .terraform directories
+**/.terraform/*
