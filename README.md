@@ -7,6 +7,8 @@ You will need to set up an OAuth App in GitHub to support the app's authenticati
 * The Authorization callback URL will be `http://localhost:5000/login/callback`
 * Make a note of the `client id` and `client secret` for the .env file
 
+You can see the site running (the version on the `master` branch) [here](http://jol-todo-webapp.azurewebsites.net/)
+
 Copy the `.env.template` file to a new file `.env`, and populate it with your mongo database connection string, client id, and client secret.
 
 The project can use docker to run in a suitably configured container. For this you will need Docker installed.
