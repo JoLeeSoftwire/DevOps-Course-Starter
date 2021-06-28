@@ -28,6 +28,6 @@ before-deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: curl -dH --fail -X POST $AZURE_URL
+  script: bash scripts/deploy.sh
   on:
     branch: master
